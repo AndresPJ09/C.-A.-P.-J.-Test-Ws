@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búsqueda de Vuelos</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Búsqueda de vuelos</h1>
+        <form id="search-form">
+            <div class="search-parameters">
+                <label for="origin">Origen</label>
+                <select id="origin" name="origin">
+                    <option value="CAI">CAI</option>
+                    <option value="AUH">AUH</option>
+                    <!-- Agregar más opciones según sea necesario -->
+                </select>
+
+                <label for="destination">Destino</label>
+                <select id="destination" name="destination">
+                    <option value="AUH">AUH</option>
+                    <option value="CAI">CAI</option>
+                    <!-- Agregar más opciones según sea necesario -->
+                </select>
+
+                <label for="cabin">Tipo de Cabina</label>
+                <select id="cabin" name="cabin">
+                    <option value="economy">Economy</option>
+                    <option value="business">Business</option>
+                </select>
+
+                <label for="trip-type">Tipo de Viaje</label>
+                <input type="radio" id="return" name="trip-type" value="return" checked>
+                <label for="return">Retorno</label>
+                <input type="radio" id="one-way" name="trip-type" value="one-way">
+                <label for="one-way">Solo ida</label>
+
+                <label for="departure-date">Fecha Salida</label>
+                <input type="date" id="departure-date" name="departure-date" required>
+
+                <label for="return-date">Fecha Regreso</label>
+                <input type="date" id="return-date" name="return-date">
+
+                <button type="submit">Aplicar</button>
+            </div>
+        </form>
+
+        <div class="flight-details">
+            <h2>Detalle de vuelos de salida</h2>
+            <input type="checkbox" id="show-three-days-departure">
+            <label for="show-three-days-departure">Visualización tres días antes y después</label>
+            <table id="departure-flights">
+                <thead>
+                    <tr>
+                        <th>Origen</th>
+                        <th>Destino</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Número de Vuelo</th>
+                        <th>Precio de Cabina</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Resultados de la búsqueda se mostrarán aquí -->
+                </tbody>
+            </table>
+
+            <h2>Detalle de vuelos de regreso</h2>
+            <input type="checkbox" id="show-three-days-return">
+            <label for="show-three-days-return">Visualización tres días antes y después</label>
+            <table id="return-flights">
+                <thead>
+                    <tr>
+                        <th>Origen</th>
+                        <th>Destino</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Número de Vuelo</th>
+                        <th>Precio de Cabina</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Resultados de la búsqueda se mostrarán aquí -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="confirm-reservation">
+            <label for="passenger-count">Confirmar reserva para:</label>
+            <input type="number" id="passenger-count" name="passenger-count" min="1" value="1">
+            <button id="reserve-button">Reservar Vuelo</button>
+            <button id="exit-button">Salir</button>
+        </div>
+    </div>
+
+    <script src="BusquedaVuelos."></script>
+</body>
+</html>
