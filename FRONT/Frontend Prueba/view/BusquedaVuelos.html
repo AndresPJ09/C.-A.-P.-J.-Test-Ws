@@ -3,55 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Búsqueda de Vuelos</title>
+    <title>Sistema de Reserva de Vuelos</title>
     <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container">
-        <h1>Búsqueda de vuelos</h1>
-        <form id="search-form">
-            <div class="search-parameters">
-                <label for="origin">Origen</label>
-                <select id="origin" name="origin">
-                    <option value="CAI">CAI</option>
-                    <option value="AUH">AUH</option>
-                    <!-- Agregar más opciones según sea necesario -->
-                </select>
-
-                <label for="destination">Destino</label>
-                <select id="destination" name="destination">
-                    <option value="AUH">AUH</option>
-                    <option value="CAI">CAI</option>
-                    <!-- Agregar más opciones según sea necesario -->
-                </select>
-
-                <label for="cabin">Tipo de Cabina</label>
-                <select id="cabin" name="cabin">
-                    <option value="economy">Economy</option>
-                    <option value="business">Business</option>
-                </select>
-
-                <label for="trip-type">Tipo de Viaje</label>
-                <input type="radio" id="return" name="trip-type" value="return" checked>
-                <label for="return">Retorno</label>
-                <input type="radio" id="one-way" name="trip-type" value="one-way">
-                <label for="one-way">Solo ida</label>
-
-                <label for="departure-date">Fecha Salida</label>
-                <input type="date" id="departure-date" name="departure-date" required>
-
-                <label for="return-date">Fecha Regreso</label>
-                <input type="date" id="return-date" name="return-date">
-
-                <button type="submit">Aplicar</button>
+        <div class="header">
+            <h1>Búsqueda de vuelos</h1>
+        </div>
+        <div class="search-params">
+            <h2>Parámetros de Búsqueda</h2>
+            <div class="search-form">
+                <div class="form-group">
+                    <label for="origen">Origen</label>
+                    <select id="origen" class="js-select2">
+                        <option value="CAI">CAI</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="destino">Destino</label>
+                    <select id="destino" class="js-select2">
+                        <option value="AUH">AUH</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tipo-cabina">Tipo de Cabina</label>
+                    <select id="tipo-cabina">
+                        <option value="Económica">Económica</option>
+                        <option value="Ejecutiva">Ejecutiva</option>
+                        <option value="Primera Clase">Primera Clase</option>
+                    </select>
+                </div>
+                <div class="form-group radio-group">
+                    <label>Tipo de Viaje</label>
+                    <div>
+                        <input type="radio" name="tipo-viaje" value="retorno" id="retorno" checked> 
+                        <label for="retorno">Retorno</label>
+                        <input type="radio" name="tipo-viaje" value="solo-ida" id="solo-ida">
+                        <label for="solo-ida">Solo ida</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="fecha-salida">Fecha Salida</label>
+                    <input type="date" id="fecha-salida">
+                </div>
+                <div class="form-group">
+                    <label for="fecha-regreso">Fecha Regreso</label>
+                    <input type="date" id="fecha-regreso">
+                </div>
+                <button id="buscar-vuelos"><i class="fas fa-search"></i> Aplicar</button>
             </div>
-        </form>
-
-        <div class="flight-details">
-            <h2>Detalle de vuelos de salida</h2>
-            <input type="checkbox" id="show-three-days-departure">
-            <label for="show-three-days-departure">Visualización tres días antes y después</label>
-            <table id="departure-flights">
+        </div>
+        <div class="flight-details" id="salida-details">
+            <h2>Detalle de vuelos de salida:</h2>
+            <input type="checkbox" id="salida-checkbox">
+            <label for="salida-checkbox">Visualización tres días antes y después</label>
+            <table>
                 <thead>
                     <tr>
                         <th>Origen</th>
@@ -62,39 +71,44 @@
                         <th>Precio de Cabina</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- Resultados de la búsqueda se mostrarán aquí -->
-                </tbody>
-            </table>
-
-            <h2>Detalle de vuelos de regreso</h2>
-            <input type="checkbox" id="show-three-days-return">
-            <label for="show-three-days-return">Visualización tres días antes y después</label>
-            <table id="return-flights">
-                <thead>
-                    <tr>
-                        <th>Origen</th>
-                        <th>Destino</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Número de Vuelo</th>
-                        <th>Precio de Cabina</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Resultados de la búsqueda se mostrarán aquí -->
+                <tbody id="salida-results">
+                    <!-- Dynamic flight details will be added here -->
                 </tbody>
             </table>
         </div>
-
+        <div class="flight-details" id="regreso-details">
+            <h2>Detalle de vuelos de regreso:</h2>
+            <input type="checkbox" id="regreso-checkbox" checked>
+            <label for="regreso-checkbox">Visualización tres días antes y después</label>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Origen</th>
+                        <th>Destino</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Número de Vuelo</th>
+                        <th>Precio de Cabina</th>
+                    </tr>
+                </thead>
+                <tbody id="regreso-results">
+                    <!-- Dynamic flight details will be added here -->
+                </tbody>
+            </table>
+        </div>
         <div class="confirm-reservation">
-            <label for="passenger-count">Confirmar reserva para:</label>
-            <input type="number" id="passenger-count" name="passenger-count" min="1" value="1">
-            <button id="reserve-button">Reservar Vuelo</button>
-            <button id="exit-button">Salir</button>
+            <h2>Confirmar reserva para:</h2>
+            <div class="form-group">
+                <input type="number" placeholder="0" id="num-pasajeros"> Pasajeros
+            </div>
+            <div class="buttons">
+                <button id="reservar-vuelo">Reservar Vuelo</button>
+                <button id="salir">Salir</button>
+            </div>
         </div>
     </div>
-
-    <script src="BusquedaVuelos."></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script type="application/javascript" src="../js/BusquedaVuelo.js"></script>
 </body>
 </html>

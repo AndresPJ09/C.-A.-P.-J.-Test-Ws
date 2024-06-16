@@ -41,8 +41,19 @@ public class Tickets extends ABaseEntity {
 
     @Column(name = "confirmed", nullable = false)
     private boolean confirmed;
+    
+    @Column(name = "passport_photo_path") // Nuevo campo para la ruta o nombre del archivo de la foto del pasaporte
+    private String passportPhotoPath;
 
-    public Users getUser() {
+    public String getPassportPhotoPath() {
+		return passportPhotoPath;
+	}
+
+	public void setPassportPhotoPath(String passportPhotoPath) {
+		this.passportPhotoPath = passportPhotoPath;
+	}
+
+	public Users getUser() {
         return user;
     }
 

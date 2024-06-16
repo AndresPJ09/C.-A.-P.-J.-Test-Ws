@@ -10,8 +10,19 @@ public class CabinTypes extends ABaseEntity {
 
     @Column(name = "name", length = 50, nullable = false)
     private String name;
+    
+    @Column(name = "price_multiplier", nullable = false)
+    private double priceMultiplier;
 
-    public String getName() {
+    public double getPriceMultiplier() {
+		return priceMultiplier;
+	}
+
+	public void setPriceMultiplier(double priceMultiplier) {
+		this.priceMultiplier = priceMultiplier;
+	}
+
+	public String getName() {
         return name;
     }
 
