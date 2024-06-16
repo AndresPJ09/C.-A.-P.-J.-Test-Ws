@@ -1,90 +1,72 @@
-$(document).ready(function() {
-    $('.js-select2').select2(); // Inicializar select2 para los selectores con clase js-select2
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('flightSearchForm');
+    const searchResults = document.getElementById('searchResults');
 
-    // Evento click para el botón de buscar vuelos
-    document.getElementById('buscar-vuelos').addEventListener('click', function() {
-        const origen = $('#origen').val(); // Obtener el valor seleccionado de origen con select2
-        const destino = $('#destino').val(); // Obtener el valor seleccionado de destino con select2
-        const tipoCabina = document.getElementById('tipo-cabina').value;
-        const tipoViaje = document.querySelector('input[name="tipo-viaje"]:checked').value;
-        const fechaSalida = document.getElementById('fecha-salida').value;
-        const fechaRegreso = document.getElementById('fecha-regreso').value;
-        const flexibleDates = document.getElementById('salida-checkbox').checked;
+    // Cargar aeropuertos de salida y llegada (ejemplo básico, idealmente cargarías desde el backend)
+    const departureAirportSelect = document.getElementById('departureAirport');
+    const destinationAirportSelect = document.getElementById('destinationAirport');
 
-        // Aquí se simularía una búsqueda real de vuelos con los parámetros seleccionados
-        const flightsData = [
-            { route: { departureAirport: { id: 'CAI', name: 'Origen' }, destinationAirport: { id: 'AUH', name: 'Destino' }, date: '2024-06-17T08:00:00Z', id: '1908', price: '500' } },
-            { route: { departureAirport: { id: 'AUH', name: 'Destino' }, destinationAirport: { id: 'CAI', name: 'Origen' }, date: '2024-06-18T10:00:00Z', id: '1909', price: '550' } }
-            // Aquí se agregarían los vuelos reales obtenidos de la API
-        ];
+    // Ejemplo de carga de aeropuertos (sustituir con datos reales del backend)
+    const airports = [
+        { id: 1, name: 'Aeropuerto 1' },
+        { id: 2, name: 'Aeropuerto 2' },
+        { id: 3, name: 'Aeropuerto 3' }
+    ];
 
-        displayResults(flightsData, tipoViaje);
+    airports.forEach(airport => {
+        const option = document.createElement('option');
+        option.value = airport.id;
+        option.textContent = airport.name;
+        departureAirportSelect.appendChild(option.cloneNode(true));
+        destinationAirportSelect.appendChild(option);
     });
 
-    // Función para mostrar los resultados de la búsqueda
-    function displayResults(data, tipoViaje) {
-        const salidaResults = document.getElementById('salida-results');
-        const regresoResults = document.getElementById('regreso-results');
+    // Manejar envío del formulario
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const formData = new FormData(form);
+        const searchParams = new URLSearchParams(formData).toString();
 
-        salidaResults.innerHTML = '';
-        regresoResults.innerHTML = '';
+        // Ejemplo de URL de búsqueda (debe ajustarse según tu API backend)
+        const apiUrl = `http://localhost:9000/recuperacion/v1/api/schedules/search?${searchParams}`;
 
-        const salidaVuelos = data.filter(flight => flight.route.departureAirport.id === 'CAI');
-        const regresoVuelos = data.filter(flight => flight.route.departureAirport.id === 'AUH');
-
-        salidaVuelos.forEach(flight => {
-            const flightElement = document.createElement('tr');
-            flightElement.innerHTML = `
-                <td>${flight.route.departureAirport.name}</td>
-                <td>${flight.route.destinationAirport.name}</td>
-                <td>${flight.date.split('T')[0]}</td>
-                <td>${flight.date.split('T')[1]}</td>
-                <td>${flight.id}</td>
-                <td>${flight.price}</td>
-            `;
-            salidaResults.appendChild(flightElement);
-        });
-
-        if (tipoViaje === 'retorno') {
-            regresoVuelos.forEach(flight => {
-                const flightElement = document.createElement('tr');
-                flightElement.innerHTML = `
-                    <td>${flight.route.departureAirport.name}</td>
-                    <td>${flight.route.destinationAirport.name}</td>
-                    <td>${flight.date.split('T')[0]}</td>
-                    <td>${flight.date.split('T')[1]}</td>
-                    <td>${flight.id}</td>
-                    <td>${flight.price}</td>
-                `;
-                regresoResults.appendChild(flightElement);
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                displaySearchResults(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
             });
-        }
-    }
-
-    // Evento click para el botón de reservar vuelo
-    document.getElementById('reservar-vuelo').addEventListener('click', function() {
-        const numPasajeros = document.getElementById('num-pasajeros').value;
-
-        // Validación simple: asegurarse de que se haya seleccionado al menos un pasajero
-        if (numPasajeros <= 0) {
-            alert('Debe seleccionar al menos un pasajero.');
-            return;
-        }
-
-        // Aquí se abriría el modal para agregar pasajeros
-        // Vamos a simular el llamado a la función para agregar pasajeros
-        openPassengerModal();
     });
 
-    // Función para abrir el modal de pasajeros
-    function openPassengerModal() {
-        // Implementar lógica para abrir el modal de pasajeros
-        alert('Abriendo formulario para agregar pasajeros');
-    }
+    function displaySearchResults(results) {
+        searchResults.innerHTML = ''; // Limpiar resultados anteriores
 
-    // Evento click para el botón de salir
-    document.getElementById('salir').addEventListener('click', function() {
-        // Implementar lógica para salir o regresar a la página principal
-        alert('Saliendo del proceso de reserva');
-    });
+        results.forEach(result => {
+            const flightDiv = document.createElement('div');
+            flightDiv.classList.add('flight');
+
+            const departureAirport = result.route.departureAirport.name;
+            const destinationAirport = result.route.destinationAirport.name;
+            const departureDateTime = new Date(result.date).toLocaleString();
+            const flightDetails = `${departureAirport} - ${destinationAirport}, ${departureDateTime}`;
+
+            const price = result.price.toFixed(2); // Redondear precio a 2 decimales
+            const confirmed = result.confirmed ? 'Confirmado' : 'No confirmado';
+            const flightInfo = `Precio: ${price}, Estado: ${confirmed}`;
+
+            const flightTitle = document.createElement('h3');
+            flightTitle.textContent = flightDetails;
+
+            const flightInfoParagraph = document.createElement('p');
+            flightInfoParagraph.textContent = flightInfo;
+
+            flightDiv.appendChild(flightTitle);
+            flightDiv.appendChild(flightInfoParagraph);
+
+            searchResults.appendChild(flightDiv);
+        });
+    }
 });

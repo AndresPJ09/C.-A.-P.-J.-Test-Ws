@@ -4,65 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirmación de la Reserva</title>
-  <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Confirmación de la reserva</h1>
+        <h1>Confirmación de la Reserva</h1>
         
         <div class="section">
-            <h2>Detalles del vuelo de salida</h2>
-            <table>
-                <tr>
-                    <td>Origen: CAI</td>
-                    <td>Destino: AUH</td>
-                    <td>Tipo de cabina: Económica</td>
-                    <td>Fecha: 11/10/17</td>
-                    <td>Número de vuelo: 1908</td>
-                </tr>
+            <h2>Detalles del Vuelo de Salida</h2>
+            <table id="detalle-vuelo-salida">
+                <!-- Detalles se llenarán dinámicamente -->
             </table>
         </div>
 
         <div class="section">
-            <h2>Detalles del vuelo de regreso</h2>
-            <table>
-                <tr>
-                    <td>Origen: AUH</td>
-                    <td>Destino: CAI</td>
-                    <td>Tipo de cabina: Económica</td>
-                    <td>Fecha: 11/15/17</td>
-                    <td>Número de vuelo: 1907</td>
-                </tr>
+            <h2>Detalles del Vuelo de Regreso</h2>
+            <table id="detalle-vuelo-regreso">
+                <!-- Detalles se llenarán dinámicamente -->
             </table>
         </div>
 
         <div class="section">
-            <h2>Datos del pasajero:</h2>
-            <form>
+            <h2>Datos del Pasajero:</h2>
+            <form id="pasajero-form">
                 <div class="form-row">
-                    <label>Nombres: <input type="text"></label>
-                    <label>Apellidos: <input type="text"></label>
-                    <label>Fecha de nacimiento: <input type="text" placeholder="dd/mm/yyyy"></label>
+                    <label>Nombres: <input type="text" id="nombres"></label>
+                    <label>Apellidos: <input type="text" id="apellidos"></label>
+                    <label>Fecha de nacimiento: <input type="text" id="fecha-nacimiento" placeholder="dd/mm/yyyy"></label>
                 </div>
                 <div class="form-row">
-                    <label>Número Pasaporte: <input type="text"></label>
+                    <label>Número Pasaporte: <input type="text" id="numero-pasaporte"></label>
                     <label>País de pasaporte: 
-                        <select>
-                            <option>Seleccionar</option>
+                        <select id="pais-pasaporte">
+                            <option value="">Seleccionar</option>
+                            <!-- Opciones dinámicas -->
                         </select>
                     </label>
-                    <label>Teléfono: <input type="text"></label>
+                    <label>Teléfono: <input type="text" id="telefono"></label>
                 </div>
                 <div class="form-row">
-                    <label>Foto Pasaporte: <input type="file"></label>
-                    <button type="button" class="btn btn-primary">Agregar Pasajero</button>
+                    <label>Foto Pasaporte: <input type="file" id="foto-pasaporte"></label>
+                    <button type="button" class="btn btn-primary" id="agregar-pasajero">Agregar Pasajero</button>
                 </div>
             </form>
         </div>
 
         <div class="section">
-            <h2>Lista de pasajeros</h2>
-            <table class="full-width">
+            <h2>Lista de Pasajeros</h2>
+            <table id="lista-pasajeros" class="full-width">
                 <thead>
                     <tr>
                         <th>Nombres</th>
@@ -72,27 +61,30 @@
                         <th>País de pasaporte</th>
                         <th>Teléfono</th>
                         <th>Foto Pasaporte</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Aleik</td>
-                        <td>Hafezi</td>
-                        <td>11-05-1994</td>
-                        <td>3695005740</td>
-                        <td>Bahrain</td>
-                        <td>+573023457889</td>
-                        <td><button type="button" class="btn btn-secondary">Ver pasaporte</button></td>
-                    </tr>
+                    <!-- Lista de pasajeros se llenará dinámicamente -->
                 </tbody>
             </table>
-            <button type="button" class="btn btn-danger">Eliminar Pasajero</button>
+            <button type="button" class="btn btn-danger" id="eliminar-pasajero">Eliminar Pasajero</button>
         </div>
 
         <div class="action-buttons">
-            <button type="button" class="btn btn-secondary">Regresar a buscar vuelos</button>
-            <button type="button" class="btn btn-primary">Confirmar Reserva</button>
+            <button type="button" class="btn btn-secondary" id="regresar-busqueda-vuelos">Regresar a buscar vuelos</button>
+            <button type="button" class="btn btn-primary" id="confirmar-reserva">Confirmar Reserva</button>
         </div>
     </div>
+
+    <!-- Modal de Confirmación -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Reserva confirmada correctamente.</p>
+        </div>
+    </div>
+
+    <script type="application/javascript" src="../js/Con.js"></script>
 </body>
 </html>
